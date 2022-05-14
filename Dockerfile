@@ -4,7 +4,7 @@ ARG IMAGE_VERSION
 ARG BUILD_DATE
 
 LABEL org.opencontainers.image.created="$BUILD_DATE"
-LABEL org.opencontainers.image.source="github.com/wfg/docker-openvpn-client"
+LABEL org.opencontainers.image.source="github.com/Telestosatt/openvpn-client-docker"
 LABEL org.opencontainers.image.version="$IMAGE_VERSION"
 
 ENV KILL_SWITCH=on \
@@ -12,6 +12,7 @@ ENV KILL_SWITCH=on \
     HTTP_PROXY=off \
     SOCKS_PROXY=off
 
+RUN apk --no-cache --no-progress upgrade
 RUN apk add --no-cache \
         bash \
         bind-tools \
