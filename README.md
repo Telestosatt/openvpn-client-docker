@@ -21,6 +21,7 @@ I plan to keep everything here well-documented so this is not only a learning ex
 ## How do I use it?
 ### Getting the image
 To build the image yourself, run
+
 ```git clone https://github.com/Telestosatt/openvpn-client-docker openvpn-client-docker```
 
 ``` cd openvpn-client-docker```
