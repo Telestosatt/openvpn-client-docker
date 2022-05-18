@@ -1,6 +1,6 @@
 # OpenVPN Client for Docker
 ## What is this and what does it do?
-[`ghcr.io/wfg/openvpn-client`](https://github.com/users/wfg/packages/container/package/openvpn-client) is a containerized OpenVPN client.
+[`Telestosatt/openvpn-client-docker`](https://github.com/users/Telestosatt/packages/container/package/openvpn-client) is a containerized OpenVPN client.
 It has a kill switch built with `iptables` that kills Internet connectivity to the container if the VPN tunnel goes down for any reason.
 It also includes an HTTP proxy server ([Tinyproxy](https://tinyproxy.github.io/)) and a SOCKS proxy server ([Dante](https://www.inet.no/dante/index.html)).
 This allows hosts and non-containerized applications to use the VPN without having to run VPN clients on those hosts.
@@ -20,17 +20,17 @@ I plan to keep everything here well-documented so this is not only a learning ex
 
 ## How do I use it?
 ### Getting the image
-You can either pull it from GitHub Container Registry or build it yourself.
+To build the image yourself, run
+```git clone https://github.com/Telestosatt/openvpn-client-docker openvpn-client-docker```
 
-To pull it from GitHub Container Registry, run
-```bash
-docker pull ghcr.io/wfg/openvpn-client
-```
+``` cd openvpn-client-docker```
 
-To build it yourself, run
-```bash
-docker build -t ghcr.io/wfg/openvpn-client https://github.com/wfg/docker-openvpn-client.git
-```
+```nano Dockerfile```
+
+Fill `VPN_CONFIG_FILE` with the name of `.ovpn` files (which are provided by your VPN provider) you want to use and save it.
+Example:- `VPN_CONFIG_FILE=Netherlands.ovpn`
+
+```bash docker build -t openvpn-client-docker .```
 
 ### Creating and running a container
 The image requires the container be created with the `NET_ADMIN` capability and `/dev/net/tun` accessible.
@@ -44,22 +44,7 @@ docker run --detach \
   --cap-add=NET_ADMIN \
   --device=/dev/net/tun \
   --volume <path/to/config/dir>:/data/vpn \
-  ghcr.io/wfg/openvpn-client
-```
-
-#### `docker-compose`
-```yaml
-services:
-  openvpn-client:
-    image: ghcr.io/wfg/openvpn-client
-    container_name: openvpn-client
-    cap_add:
-      - NET_ADMIN
-    devices:
-      - /dev/net/tun
-    volumes:
-      - <path/to/config/dir>:/data/vpn
-    restart: unless-stopped
+  openvpn-client-docker
 ```
 
 #### Environment variables (alphabetical)
@@ -95,7 +80,7 @@ Compose has support for [Docker secrets](https://docs.docker.com/engine/swarm/se
 See the [Compose file](docker-compose.yml) in this repository for example usage of passing proxy credentials as Docker secrets.
 
 ### VPN Authentication
-To provide the VPN user and password credentials, create a file called `passfile` in the config folder being mounted, right next to the vpn .conf (or .ovpn) file.
+To provide the VPN user and password credentials, create a file called `auth.txt` in the config folder being mounted, right next to the vpn .conf (or .ovpn) file.
 
 In the passfile, enter the username in the first line and password in the second line. For example:
 ```
@@ -104,7 +89,7 @@ p@sswd123
 ```
 Now in the vpn configuration file, such as my_vpn.ovpn, create a new line and enter the following:
 ```
-auth-user-pass passfile
+auth-user-pass auth.txt
 ```
 That should be enough. You can refer to this link for more details: https://help.yeastar.com/en/s-series/topic/openvpn-username-password-authentication.html#openvpn-create-account-password-for-each-client__section_uyg_sps_33b
 
@@ -131,7 +116,7 @@ ports:
 In both cases, replace `<host_port>` and `<container_port>` with the port used by your connected container.
 
 ### Verifying functionality
-Once you have container running `ghcr.io/wfg/openvpn-client`, run the following command to spin up a temporary container using `openvpn-client` for networking.
+Once you have container running `openvpn-client-docker`, run the following command to spin up a temporary container using `openvpn-client` for networking.
 The `wget -qO - ifconfig.me` bit will return the public IP of the container (and anything else using `openvpn-client` for networking).
 You should see an IP address owned by your VPN provider.
 ```bash
