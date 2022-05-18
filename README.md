@@ -22,16 +22,24 @@ I plan to keep everything here well-documented so this is not only a learning ex
 ### Getting the image
 To build the image yourself, run
 
-```git clone https://github.com/Telestosatt/openvpn-client-docker openvpn-client-docker```
+```
+git clone https://github.com/Telestosatt/openvpn-client-docker openvpn-client-docker
+```
 
-``` cd openvpn-client-docker```
+```
+cd openvpn-client-docker
+```
 
-```nano Dockerfile```
+```
+nano Dockerfile
+```
 
 Fill `VPN_CONFIG_FILE` with the name of `.ovpn` files (which are provided by your VPN provider) you want to use and save it.
 Example:- `VPN_CONFIG_FILE=Netherlands.ovpn`
 
-```bash docker build -t openvpn-client-docker .```
+```
+bash docker build -t openvpn-client-docker .
+```
 
 ### Creating and running a container
 The image requires the container be created with the `NET_ADMIN` capability and `/dev/net/tun` accessible.
