@@ -31,13 +31,6 @@ cd openvpn-client-docker
 ```
 
 ```
-nano Dockerfile
-```
-
-Fill `VPN_CONFIG_FILE` with the name of `.ovpn` files (which are provided by your VPN provider) you want to use and save it.
-Example:- `VPN_CONFIG_FILE=Netherlands.ovpn`
-
-```
 bash docker build -t openvpn-client-docker .
 ```
 
@@ -49,6 +42,7 @@ See the sections below to learn how to use the [proxies](#http_proxy-and-socks_p
 #### `docker run`
 ```bash
 docker run --detach \
+  --env VPN_CONFIG_FILE='name_of_config_file.ovpn' \
   --name=openvpn-client \
   --cap-add=NET_ADMIN \
   --device=/dev/net/tun \
