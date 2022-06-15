@@ -31,7 +31,7 @@ cd openvpn-client-docker
 ```
 
 ```
-bash docker build -t openvpn-client-docker .
+docker build -t openvpn-client-docker .
 ```
 
 ### Creating and running a container
