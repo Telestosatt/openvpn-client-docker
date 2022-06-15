@@ -11,8 +11,7 @@ LABEL org.opencontainers.image.version="$IMAGE_VERSION"
 ENV KILL_SWITCH=on \
     VPN_LOG_LEVEL=3 \
     HTTP_PROXY=off \
-    SOCKS_PROXY=off \
-    VPN_CONFIG_FILE=
+    SOCKS_PROXY=off
 
 RUN apk --no-cache --no-progress upgrade
 RUN apk add --no-cache \
